@@ -61,14 +61,18 @@ static id sharedInstance = nil;
 - (void)openAllTheseFiles:(NSArray *)arrayOfFiles
 {
 	NSString *filename;
+    NSURL *fileURL;
 	NSMutableArray *projectsArray = [NSMutableArray array];
 	for (filename in arrayOfFiles) {
+        NSString *filePath = [filename stringByExpandingTildeInPath];
+        
+        fileURL = [NSURL fileURLWithPath:[FRABasic resolveAliasInPath:filePath]];
 		if ([[filename pathExtension] isEqualToString:@"smlc"] || [[filename pathExtension] isEqualToString:@"frac"] || [[filename pathExtension] isEqualToString:@"fraiseSnippets"]) { // If the file are code snippets do an import
-			[[FRASnippetsController sharedInstance] performSnippetsImportWithPath:filename];
+			[[FRASnippetsController sharedInstance] performSnippetsImportWithPath:fileURL];
 		} else if ([[filename pathExtension] isEqualToString:@"smlp"] || [[filename pathExtension] isEqualToString:@"frap"] || [[filename pathExtension] isEqualToString:@"fraiseProject"]) { // If the file is a project open all its files
 			[projectsArray addObject:filename];
 		} else {
-			[self shouldOpen:[FRABasic resolveAliasInPath:filename] withEncoding:0];
+			[self shouldOpen:fileURL withEncoding:0];
 		}
 	}
 	
@@ -314,15 +318,13 @@ static id sharedInstance = nil;
 	
 	[document setValue:[NSNumber numberWithInteger:encoding] forKey:@"encoding"];
 	[document setValue:[NSString localizedNameOfStringEncoding:[[document valueForKey:@"encoding"] integerValue]] forKey:@"encodingName"];
-	[document setValue:path forKey:@"path"];
+	[document setValue:[path path] forKey:@"path"];
 	[FRACurrentProject updateWindowTitleBarForDocument:document];
 	
 	[[document valueForKey:@"firstTextView"] setSelectedRange:NSMakeRange(0,0)];
 	
 	[FRAVarious insertIconsInBackground:[NSArray arrayWithObjects:document, path, nil]];
 	//NSArray *icons = [NSImage iconsForPath:path];
-//	[document setValue:[icons objectAtIndex:0] forKey:@"icon"];
-//	[document setValue:[icons objectAtIndex:1] forKey:@"unsavedIcon"];
 	
 	NSDictionary *fileAttributes = [NSDictionary dictionaryWithDictionary:[[NSFileManager defaultManager] attributesOfItemAtPath:[path path] error:nil]];
 	[document setValue:fileAttributes forKey:@"fileAttributes"];
