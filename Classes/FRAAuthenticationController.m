@@ -89,7 +89,7 @@ static id sharedInstance = nil;
 		NSString *title = [NSString stringWithFormat:NSLocalizedString(@"There was a unknown error when trying to open the file %@ with authentication", @"Indicate that there was a unknown error when trying to open the file %@ with authentication in Unknown-error-when-opening-with-authentication sheet"), path];
 		[FRAVarious standardAlertSheetWithTitle:title message:NSLocalizedString(@"Please check the permissions for the file and the enclosing folder and try again", @"Indicate that they should please check the permissions for the file and the enclosing folder and try again in Unknown-error-when-opening-with-authentication sheet") window:FRACurrentWindow];
 	} else {
-		[FRAOpenSave shouldOpenPartTwo:path withEncoding:encoding data:data];
+		[FRAOpenSave shouldOpenPartTwo:[NSURL fileURLWithPath:path] withEncoding:encoding data:data];
 	}
 }
 
@@ -120,7 +120,7 @@ static id sharedInstance = nil;
 		[FRAVarious standardAlertSheetWithTitle:title message:NSLocalizedStringFromTable(@"Please check if the file is locked, on a media that is unwritable or if you can save it in another location", @"Localizable3", @"Please check if the file is locked, on a media that is unwritable or if you can save it in another location") window:FRACurrentWindow];
 	} else {
 		if (!aCopy) {
-			[FRAOpenSave updateAfterSaveForDocument:document path:path];
+			[FRAOpenSave updateAfterSaveForDocument:document path:[NSURL fileURLWithPath:path]];
 		}
 	}
 }
