@@ -131,14 +131,12 @@ static id sharedInstance = nil;
 	
 	FRATextView *textView = [document valueForKey:@"firstTextView"];
 	NSScrollView *textScrollView = [document valueForKey:@"firstTextScrollView"];
-	NSScrollView *gutterScrollView = [document valueForKey:@"firstGutterScrollView"];
 	NSInteger viewNumber = 0;
 	while (viewNumber++ < 3) {
 		if (viewNumber == 2) {
 			if ([document valueForKey:@"secondTextView"] != nil) {
 				textView = [document valueForKey:@"secondTextView"];
 				textScrollView = [document valueForKey:@"secondTextScrollView"];
-				gutterScrollView = [document valueForKey:@"secondGutterScrollView"];
 			} else {
 				continue;
 			}
@@ -147,17 +145,19 @@ static id sharedInstance = nil;
 			if ([document valueForKey:@"singleDocumentWindow"] != nil) {
 				textView = [document valueForKey:@"thirdTextView"];
 				textScrollView = [document valueForKey:@"thirdTextScrollView"];
-				gutterScrollView = [document valueForKey:@"thirdGutterScrollView"];
 			} else {
 				continue;
 			}
 		}
 		NSRange selectedRange = [textView selectedRange];
 		if ([[document valueForKey:@"isLineWrapped"] boolValue] == YES) {
+            NSString *string = [NSString stringWithString:[textView string]];
+            [textView setString:@""];
 			[[textView textContainer] setContainerSize:NSMakeSize(CGFLOAT_MAX, CGFLOAT_MAX)];
 			[[textView textContainer] setWidthTracksTextView:NO];
 			[textView setHorizontallyResizable:YES];
 			[textScrollView setHasHorizontalScroller:YES];
+            [textView setString:string]; // To reflow/rewrap the text
 		} else {
 			NSString *string = [NSString stringWithString:[textView string]];
 			[textScrollView setHasHorizontalScroller:NO];
@@ -167,7 +167,7 @@ static id sharedInstance = nil;
 			[textView setString:string]; // To reflow/rewrap the text
 			[textView setHorizontallyResizable:NO];
 		}
-		[textScrollView display]; // Otherwise -[FRAMainController resizeViewsForDocument:] won't know if it has a scrollbar or not
+		[textScrollView display];
 		
 		[textView setSelectedRange:selectedRange];
 		[textView scrollRangeToVisible:selectedRange];
@@ -180,7 +180,6 @@ static id sharedInstance = nil;
 	}
 	
 	[FRACurrentProject resizeViewsForDocument:document];
-	//[FRACurrentProject updateLineWrapToolbarItem];
 }
 
 
