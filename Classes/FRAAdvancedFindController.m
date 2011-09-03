@@ -652,7 +652,7 @@ static id sharedInstance = nil;
             if ([fileManager fileExistsAtPath:fullyQualifiedName isDirectory:&isDir] && !isDir && ([fileManager isReadableFileAtPath:fullyQualifiedName]))
             {
                 // it's a file, create document and add it
-				[FRAOpenSave shouldOpen:fullyQualifiedName withEncoding:0];
+				[FRAOpenSave shouldOpen:[NSURL fileURLWithPath:fullyQualifiedName] withEncoding:0];
             }
 			else {
 				// no search in subdirectories
