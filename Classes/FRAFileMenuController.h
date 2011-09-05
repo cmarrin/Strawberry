@@ -30,9 +30,10 @@ and limitations under the License.
 - (IBAction)newProjectAction:(id)sender;
 - (IBAction)openAction:(id)sender;
 
+- (void)showHiddenFiles:(BOOL) show;
+
 - (IBAction)saveAction:(id)sender;
 - (IBAction)saveAsAction:(id)sender;
-- (IBAction)saveACopyAsAction:(id)sender;
 - (IBAction)revertAction:(id)sender;
 - (void)performRevertOfDocument:(id)document;
 
@@ -46,5 +47,6 @@ and limitations under the License.
 - (IBAction)revealInFinderAction:(id)sender;
 
 - (IBAction)saveDocumentsAsProjectAction:(id)sender;
+
 
 @end
