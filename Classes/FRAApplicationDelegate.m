@@ -314,7 +314,8 @@ static id sharedInstance = nil;
 
 - (BOOL)applicationShouldOpenUntitledFile:(NSApplication *)sender
 {
-	if ([[FRADefaults valueForKey:@"OpenAllProjectsIHadOpen"] boolValue] == YES && [[FRADefaults valueForKey:@"OpenProjects"] count] > 0 || [[[FRAProjectsController sharedDocumentController] documents] count] > 0) {
+	if (([[FRADefaults valueForKey:@"OpenAllProjectsIHadOpen"] boolValue] == YES && [[FRADefaults valueForKey:@"OpenProjects"] count] > 0 ) || [[[FRAProjectsController sharedDocumentController] documents] count] > 0) 
+    {
 		return NO;
 	} else {
 		return [[FRADefaults valueForKey:@"NewDocumentAtStartup"] boolValue];

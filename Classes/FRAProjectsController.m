@@ -134,10 +134,12 @@ and limitations under the License.
 - (IBAction)openProjectAction:(id)sender
 {
 	NSOpenPanel *openPanel = [NSOpenPanel openPanel];
-	[openPanel setResolvesAliases:YES];		
-	NSInteger result = [openPanel runModalForDirectory:[FRAInterface whichDirectoryForOpen] file:nil types:[NSArray arrayWithObjects:@"smlp", @"fraiseProject", nil]];
+	NSArray *types = [NSArray arrayWithObjects:@"smlp", @"fraiseProject", nil];
+	[openPanel setResolvesAliases:YES];	
+    [openPanel setAllowedFileTypes:types];
+	NSInteger result = [openPanel runModal];
 	if (result == NSOKButton) {
-		[self performOpenProjectWithPath:[[openPanel filenames] objectAtIndex:0]];
+		[self performOpenProjectWithPath:[[openPanel URLs] objectAtIndex:0]];
 	}
 }
 

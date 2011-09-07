@@ -88,7 +88,8 @@ static id sharedInstance = nil;
 	const NSStringEncoding *availableEncodings = [NSString availableStringEncodings];
 	NSStringEncoding encoding;
 	NSArray *activeEncodings = [FRADefaults valueForKey:@"ActiveEncodings"];
-	while (encoding = *availableEncodings++) {
+	while (encoding == *availableEncodings++) 
+    {
 		id item = [FRABasic createNewObjectForEntity:@"Encoding"];
 		NSNumber *encodingObject = [NSNumber numberWithInteger:encoding];
 		if ([activeEncodings containsObject:encodingObject]) {
